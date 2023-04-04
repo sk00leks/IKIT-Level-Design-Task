@@ -1,0 +1,87 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Tags { "Queue" = "Transparent" }
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Blend One One
+	ZWrite Off
+	Cull Off
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_MainTex("Main Tex", 2D) = "white" {}
+	_RadiusMin("Radius Min", Float) = 1
+	_RadiusSize("Radius Size", Float) = 1
+
+	_NearTex("Near Tex", 2D) = "white" {}
+	_NearScale("Near Scale", Float) = 0
+
+	_AnimOffset("Anim Offset", Float) = 0
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _NEAR
+	#pragma multi_compile_local __ _ANIM
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4    _Color;
+	sampler2D _MainTex;
+	float     _RadiusMin;
+	float     _RadiusSize;
+
+	sampler2D _NearTex;
+	float     _NearScale;
+
+	float _AnimOffset;
+END_CBUFFER
+
+BEGIN_CODE
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float3 wcam = _WorldSpaceCameraPos;
+
+		#if _ANIM
+			float angle = v.texcoord0.z + _AnimOffset;
+
+			v.vertex.x += sin(angle) * v.texcoord0.w;
+			v.vertex.z += cos(angle) * v.texcoord0.w;
+		#endif
+
+		v.vertex.xyz = normalize(v.vertex.xyz) * (_RadiusMin + v.texcoord0.y * _RadiusSize);
+
+		// Clamp to 0..1
+		v.texcoord0.y = saturate(v.texcoord0.y * 10.0f);
+
+		#if _NEAR
+			float4 wpos = SGT_O2W(v.vertex);
+
+			v.texcoord1.xyz = wpos.xyz - wcam;
+		#endif
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 finalColor = tex2D(_MainTex, d.texcoord0.xy);
+		
+		finalColor += d.vertexColor * finalColor.a;
+
+		finalColor *= _Color * d.vertexColor.a;
+
+		#if _NEAR
+			float2 near01 = length(d.texcoord1.xyz) * _NearScale;
+			float  near   = tex2D(_NearTex, near01).a;
+
+			finalColor *= near;
+		#endif
+
+		OutputWithAlpha(o, ModifyUnlitOutput(finalColor));
+	}
+END_CODE

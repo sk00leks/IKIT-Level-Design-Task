@@ -1,0 +1,148 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Blend"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	ZTest LEqual
+	Cull Front
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_DepthTex("Depth Tex", 2D) = "white" {}
+	_HorizonLengthRecip("Horizon Length Recip", Float) = 0
+	_Sky("Sky", Float) = 0
+
+	_SoftParticlesFactor("Soft Particles Factor", Float) = 1
+
+	_LightingTex("Lighting Tex", 2D) = "white" {}
+	_AmbientColor("Ambient Color", Color) = (0,0,0)
+	_ScatteringTex("Scattering Tex", 2D) = "white" {}
+	_ScatteringMie("Scattering Mie", Float) = 0.5
+	_ScatteringRayleigh("Scattering Rayleigh", Float) = 0.5
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _HDR
+	#pragma multi_compile_local __ _LIT
+	#pragma multi_compile_local __ _SOFTNESS
+	#pragma multi_compile_local __ _SCATTERING
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+	"../../Shared/Shaders/SGT_Light.surfshader"
+	"../../Shared/Shaders/SGT_Shadow.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4    _Color;
+	sampler2D _DepthTex;
+	float     _HorizonLengthRecip;
+	float     _Sky;
+	float4x4  _WorldToLocal;
+	float4x4  _LocalToWorld;
+
+	sampler2D _LightingTex;
+	float3    _AmbientColor;
+
+	sampler2D _ScatteringTex;
+	float     _ScatteringMie;
+	float     _ScatteringRayleigh;
+
+	float _SoftParticlesFactor;
+END_CBUFFER
+
+BEGIN_CODE
+	float GetOutsideDistance(float3 ray, float3 rayD)
+	{
+		float B = dot(ray, rayD);
+		float C = dot(ray, ray) - 1.0f;
+		float D = B * B - C;
+		return max(-B - sqrt(max(D, 0.0f)), 0.0f);
+	}
+
+	float3 GetNear(float3 far)
+	{
+		float3 wcam = _WorldSpaceCameraPos;
+		float3 near = mul(_WorldToLocal, float4(wcam, 1.0f)).xyz;
+		float3 dir  = normalize(far - near);
+
+		return near + dir * GetOutsideDistance(near, dir);
+	}
+
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float4 wPos = SGT_O2W(v.vertex);
+		float3 far  = mul(_WorldToLocal, wPos).xyz;
+		float3 near = GetNear(far);
+
+		v.texcoord0.xy = length(near - far) * _HorizonLengthRecip;
+
+		#if _SOFTNESS
+			v.texcoord1.z = -SGT_O2V(v.vertex).z;
+		#endif
+
+		v.texcoord2.xyz = mul((float3x3)_LocalToWorld, near);
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 depth = tex2D(_DepthTex, d.texcoord0.xx); depth.a = saturate(depth.a + (1.0f - depth.a) * _Sky);
+		float4 main  = depth * _Color;
+		float3 wcam  = _WorldSpaceCameraPos;
+		float3 wnorm = normalize(d.texcoord2.xyz);
+
+		#if _SOFTNESS
+			float sceneZ = GetLinearEyeDepth(d.screenUV);
+			float partZ = d.texcoord1.z;
+
+			main.a *= smoothstep(0.0f, 1.0f, _SoftParticlesFactor * abs(sceneZ - partZ));
+		#endif
+
+		float4 finalColor = main;
+
+		#if _LIT
+			finalColor.rgb *= _AmbientColor;
+
+			float4 lighting   = 0.0f;
+			float4 scattering = 0.0f;
+
+			for (int i = 0; i < SgtLightCount; i++)
+			{
+				float theta = dot(wnorm, SgtLightDirection[i]) * 0.5f + 0.5f;
+
+				lighting += tex2D(_LightingTex, theta) * main * SgtLightColor[i];
+
+				#if _SCATTERING
+					float3 worldViewDir  = normalize(d.worldSpacePosition - wcam);
+					float3 worldLightDir = normalize(SgtLightPosition[i].xyz - wcam);
+					float  angle         = dot(worldViewDir, worldLightDir);
+					float  phase         = MieRayleighPhase(angle, _ScatteringMie, _ScatteringRayleigh);
+
+					scattering += tex2D(_ScatteringTex, theta) * SgtLightScatter[i] * phase;
+				#endif
+			}
+
+			#if _SCATTERING
+				#if _HDR
+					scattering *= main;
+					lighting.xyz += scattering.xyz;
+				#else
+					scattering *= finalColor.a; // Fade scattering out according to optical depth
+					scattering *= saturate(1.0f - (finalColor + lighting)); // Only scatter into remaining rgba
+					lighting += scattering;
+				#endif
+			#endif
+
+			finalColor += lighting * ShadowColor(d.worldSpacePosition);
+			finalColor.a = saturate(main.a);
+		#else
+			finalColor = ModifyUnlitOutput(finalColor);
+		#endif
+
+		OutputWithAlpha(o, finalColor);
+	}
+END_CODE

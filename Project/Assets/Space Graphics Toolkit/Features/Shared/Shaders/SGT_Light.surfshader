@@ -1,0 +1,45 @@
+﻿BEGIN_OPTIONS
+	Stackable "False"
+END_OPTIONS
+
+BEGIN_DEFINES
+	#define SGT_MAX_LIGHTS 16
+END_DEFINES
+
+BEGIN_CBUFFER
+	int    SgtLightCount;
+	float4 SgtLightColor[SGT_MAX_LIGHTS];
+	float4 SgtLightScatter[SGT_MAX_LIGHTS];
+	float4 SgtLightPosition[SGT_MAX_LIGHTS];
+	float3 SgtLightDirection[SGT_MAX_LIGHTS];
+END_CBUFFER
+
+BEGIN_CODE
+	float MiePhase(float angle, float4 mie)
+	{
+		return mie.y / pow(mie.z - mie.x * angle, mie.w);
+	}
+
+	float MiePhase2(float angle, float mie)
+	{
+		return pow(saturate(angle), mie);
+	}
+
+	float RayleighPhase(float angle, float rayleigh)
+	{
+		return rayleigh * angle * angle;
+	}
+
+	float MieRayleighPhase(float angle, float4 mie, float rayleigh)
+	{
+		return MiePhase(angle, mie) + RayleighPhase(angle, rayleigh);
+	}
+
+	float MieRayleighPhase(float angle, float mie, float rayleigh)
+	{
+		float m = pow(saturate(angle), mie);
+		float r = angle * angle * rayleigh;
+
+		return m + r;
+	}
+END_CODE

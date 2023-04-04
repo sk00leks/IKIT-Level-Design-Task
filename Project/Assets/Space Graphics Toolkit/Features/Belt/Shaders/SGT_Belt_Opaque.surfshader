@@ -1,0 +1,15 @@
+﻿BEGIN_SUBSHADERS
+	"SGT_Belt.surfshader"
+END_SUBSHADERS
+
+BEGIN_CODE
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		if (d.blackboard.finalColor.a < 0.5f)
+		{
+			d.blackboard.finalColor.a = 0.0f; discard;
+		}
+
+		OutputWithoutAlpha(o, d.blackboard.finalColor);
+	}
+END_CODE

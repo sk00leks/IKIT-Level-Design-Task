@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6590103585319284574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5546776068842970222}
+  - component: {fileID: 3246594767690376029}
+  m_Layer: 0
+  m_Name: Level1_new
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5546776068842970222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590103585319284574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.413776, y: 22.085762, z: -9.431769}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3246594767690376029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590103585319284574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a322179065cc4a91e484b3477d858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rubbishList:
+  - {fileID: 4470953096191404424, guid: 3414925552cf2934497807922db85e0d, type: 3}
+  - {fileID: 2439818583356853439, guid: e6229d213dab36c46914960e186db291, type: 3}
+  - {fileID: 530546688504665382, guid: f70511ad97be236429cc1da2804174b0, type: 3}
+  planet: {fileID: 4369315860000459626, guid: 1035582556c0bad4b8058887b3b9bbd8, type: 3}
+  backGround: {fileID: 5957412030064369023, guid: b37031b496f38dc468c475a56c045b1c,
+    type: 3}
+  startNumberRubbish: 60
+  maxNumberRubbish: 80
+  backgroungColor: {r: 0.21176471, g: 0.33333334, b: 0.5294118, a: 0}
+  shieldEtalon: {fileID: 5169085476477241160, guid: 944a5112f5256ae4d87f2b683ee23a35,
+    type: 3}
+  meteor: {fileID: 1438618567075492, guid: 6e82bfe3eb90bbc468d6b3be50ddcb56, type: 3}
+  meteorEffect: {fileID: 185518, guid: 2ef436b6c6313494daf190cd68ebf636, type: 3}

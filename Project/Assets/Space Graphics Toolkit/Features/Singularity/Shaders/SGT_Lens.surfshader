@@ -1,0 +1,53 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Blend"
+	Tags { "Queue"="Transparent" }
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Blend SrcAlpha OneMinusSrcAlpha, Zero One
+	Cull Front
+END_PASS
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	samplerCUBE _Texture;
+	float       _WarpOuter;
+	float       _WarpStrength;
+	float       _HoleSize;
+	float       _HoleEdge;
+	float       _FadeOuter;
+END_CBUFFER
+
+BEGIN_CODE
+	float3 AxisAngle(float3 p, float3 axis, float angle)
+	{
+		float3 c = cos(angle); return p * c + cross(axis, p) * sin(angle) + axis * dot(p, axis) * (1.0f - c);
+	}
+
+	void SurfaceFunction(inout Surface o, ShaderData d)
+	{
+		float3 refl = -d.worldSpaceViewDir;
+		float3 axis = cross(d.worldSpaceNormal, refl);
+		float  rdot = saturate(dot(d.worldSpaceNormal, refl));
+
+		float3 normal = AxisAngle(refl, axis, pow(rdot, _WarpOuter) * _WarpStrength);
+
+		float4 finalColor = texCUBE(_Texture, normal);
+
+		#ifndef UNITY_COLORSPACE_GAMMA
+			finalColor.rgb = pow(finalColor.rgb, 2.2f);
+		#endif
+
+		// Fade hole
+		finalColor.rgb *= saturate((_HoleSize - rdot) * _HoleEdge);
+
+		// Fade edge
+		finalColor.a *= saturate(1.0f - pow(saturate(1.0f - rdot), _FadeOuter));
+
+		OutputWithAlpha(o, finalColor);
+	}
+END_CODE

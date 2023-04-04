@@ -1,0 +1,126 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	ZTest LEqual
+	Cull Back
+END_PASS
+
+BEGIN_PROPERTIES
+	_CameraRollAngle("Camera Roll Angle", Float) = 0
+	_MainTex("Main Tex", 2D) = "white" {}
+	_HeightTex("Height Tex", 2D) = "black" {}
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_Scale("Scale", Float) = 1
+	_Age("Age", Float) = 0
+
+	_LightingTex("Lighting Tex", 2D) = "white" {}
+	_AmbientColor("Ambient Color", Color) = (0,0,0)
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _LIT
+	#pragma multi_compile_local __ _ALPHA_TEST
+	#pragma multi_compile_local __ _POWER_RGB
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+	"../../Shared/Shaders/SGT_Light.surfshader"
+	"../../Shared/Shaders/SGT_Shadow.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	sampler2D _MainTex;
+	sampler2D _HeightTex;
+	float4    _Color;
+	float     _Scale;
+	float     _Age;
+	float     _CameraRollAngle;
+
+	sampler2D _LightingTex;
+	float3    _AmbientColor;
+END_CBUFFER
+
+BEGIN_BLACKBOARD
+	float4 finalColor;
+END_BLACKBOARD
+
+BEGIN_CODE
+	float2 Rotate(float2 v, float a)
+	{
+		float s = sin(a);
+		float c = cos(a);
+		return float2(c * v.x - s * v.y, s * v.x + c * v.y);
+	}
+
+	float3 GetOutside(float3 ray, float3 rayD)
+	{
+		float B = dot(ray, rayD);
+		float C = dot(ray, ray) - 1.0f;
+		float D = B * B - C;
+		return ray + rayD * max(-B - sqrt(max(D, 0.0f)), 0.0f);
+	}
+
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float orbitAngle    = v.vertex.x + v.vertex.z * _Age;
+		float orbitDistance = v.vertex.y;
+		float angle         = _CameraRollAngle + (v.tangent.x + v.tangent.y * _Age) * 3.141592654f;
+		float radius        = v.texcoord1.x * _Scale;
+
+		v.vertex.x = sin(orbitAngle) * orbitDistance;
+		v.vertex.y = v.texcoord1.y;
+		v.vertex.z = cos(orbitAngle) * orbitDistance;
+		v.vertex.w = 1.0f;
+
+		v.normal.xy = Rotate(v.normal.xy, angle);
+
+		float4 vertexMV = SGT_O2V(v.vertex);
+		float4 cornerMV = vertexMV;
+
+		cornerMV.xyz += v.normal * radius;
+
+		v.vertex    = SGT_V2O(cornerMV);
+		v.vertexColor = v.vertexColor * _Color;
+		v.texcoord1.xyz = -vertexMV.xyz / radius;
+		v.texcoord2.xyz = cornerMV.xyz;
+		v.texcoord3.xyz = vertexMV.xyz;
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 main = tex2D(_MainTex, d.texcoord0.xy);
+
+		#if _POWER_RGB
+			float4 finalColor = main;
+			finalColor.rgb = pow(finalColor.rgb, float3(1.0f, 1.0f, 1.0f) + (1.0f - d.vertexColor.rgb) * 10.0f);
+		#else
+			main *= d.vertexColor;
+			float4 finalColor = main;
+		#endif
+
+		#if _LIT
+			finalColor.rgb *= _AmbientColor;
+
+			float3 lighting = 0.0f;
+
+			for (int i = 0; i < SgtLightCount; i++)
+			{
+				float3 normal = GetOutside(d.texcoord1.xyz, normalize(d.texcoord2.xyz));
+				float3 lightv = mul(UNITY_MATRIX_V, SgtLightPosition[i]).xyz;
+				float  theta  = dot(normal, normalize(lightv - d.texcoord3.xyz)) * 0.5f + 0.5f;
+
+				lighting += tex2D(_LightingTex, theta) * SgtLightColor[i];
+			}
+
+			finalColor.xyz += lighting * main.rgb * ShadowColor(d.worldSpacePosition);
+		#else
+			finalColor = ModifyUnlitOutput(finalColor);
+		#endif
+
+		d.blackboard.finalColor = finalColor;
+	}
+END_CODE

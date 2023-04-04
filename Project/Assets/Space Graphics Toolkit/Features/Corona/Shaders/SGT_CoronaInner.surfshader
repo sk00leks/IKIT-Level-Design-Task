@@ -1,0 +1,78 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Blend"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Cull Back
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_DepthTex("Depth Tex", 2D) = "white" {}
+	_HorizonLengthRecip("Horizon Length Recip", Float) = 0
+	_InnerRatio("Inner Ratio", Float) = 0
+	_InnerScale("Inner Scale", Float) = 1
+END_PROPERTIES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4    _Color;
+	sampler2D _DepthTex;
+	sampler2D _LightingTex;
+	float3    _AmbientColor;
+	sampler2D _ScatteringTex;
+	float     _ScatteringMie;
+	float     _ScatteringRayleigh;
+	float     _HorizonLengthRecip;
+	float     _InnerRatio;
+	float     _InnerScale;
+	float4x4  _WorldToLocal;
+	float4x4  _LocalToWorld;
+END_CBUFFER
+
+BEGIN_CODE
+	float GetOutsideDistance(float3 ray, float3 rayD)
+	{
+		float B = dot(ray, rayD);
+		float C = dot(ray, ray) - 1.0f;
+		float D = B * B - C;
+		return -B - sqrt(max(D, 0.0f));
+	}
+
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float3 wcam = _WorldSpaceCameraPos;
+		float4 wpos = SGT_O2W(v.vertex);
+		float3 far  = mul(_WorldToLocal, wpos).xyz;
+		float3 near = mul(_WorldToLocal, float4(wcam, 1.0f)).xyz;
+
+		float3 nearFar = far - near;
+		float3 dir     = normalize(nearFar);
+		float  depthA  = length(nearFar);
+		float  depthB  = GetOutsideDistance(near, dir);
+		near += dir * max(depthB, 0.0f);
+		float depth = length(near - far);
+
+		float alt01 = (length(far) - _InnerRatio) * _InnerScale;
+
+		v.texcoord0.x = depth * _HorizonLengthRecip;
+		v.texcoord0.y = 1.0f - alt01;
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 depth = tex2D(_DepthTex, d.texcoord0.xx);
+		float4 main  = depth * _Color;
+		float3 wcam  = _WorldSpaceCameraPos;
+
+		float alt = smoothstep(0.0f, 1.0f, saturate(d.texcoord0.y));
+		main.a *= alt;
+
+		OutputWithAlpha(o, ModifyUnlitOutput(main));
+	}
+END_CODE

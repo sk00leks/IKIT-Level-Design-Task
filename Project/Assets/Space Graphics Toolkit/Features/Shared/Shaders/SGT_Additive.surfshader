@@ -1,0 +1,51 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Add"
+END_OPTIONS
+
+BEGIN_PASS("Forward")
+	Blend One [_DstBlend], One OneMinusSrcAlpha
+	Cull Off
+END_PASS
+
+BEGIN_PROPERTIES
+	_MainTex("Main Tex", 2D) = "white" {}
+	[Toggle(_POWER_RGB)] _PowerRGB("PowerRGB", Float) = 0
+	[Toggle(_NEAR)] _Near("Near", Float) = 0
+	_NearDistance("    Distance", Float) = 10000.0
+	[Enum(One,1,OneMinusSrcColor,6)] _DstBlend("DstBlend", Float) = 1 // 1 = One
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma shader_feature_local _POWER_RGB
+	#pragma shader_feature_local _NEAR
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_HDRP.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	sampler2D _MainTex;
+	float     _NearDistance;
+END_CBUFFER
+
+BEGIN_CODE
+	void SurfaceFunction(inout Surface o, ShaderData d)
+	{
+		float4 main = tex2D(_MainTex, d.texcoord0.xy);
+
+		#if _POWER_RGB
+			main.rgb = pow(main.rgb, float3(1.0f, 1.0f, 1.0f) + (1.0f - d.vertexColor.rgb) * 10.0f);
+		#else
+			main.rgb *= d.vertexColor.rgb;
+		#endif
+
+		#if _NEAR
+			d.vertexColor.a *= smoothstep(0.0f, 1.0f, distance(d.worldSpacePosition, GetCameraWorldPosition()) / _NearDistance);
+		#endif
+
+		OutputWithoutAlpha(o, ModifyUnlitOutput(main * d.vertexColor.a));
+	}
+END_CODE

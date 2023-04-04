@@ -1,0 +1,69 @@
+﻿BEGIN_OPTIONS
+	Stackable "False"
+END_OPTIONS
+
+BEGIN_DEFINES
+	#define SGT_MAX_SPHERE_SHADOWS 16
+	#define SGT_MAX_RING_SHADOWS 1
+END_DEFINES
+
+BEGIN_CBUFFER
+	int       _SphereShadowCount;
+	float4x4  _SphereShadowMatrix[SGT_MAX_SPHERE_SHADOWS];
+	float4    _SphereShadowPower[SGT_MAX_SPHERE_SHADOWS];
+
+	int       _RingShadowCount;
+	sampler2D _RingShadowTexture;
+	float4    _RingShadowColor[SGT_MAX_RING_SHADOWS];
+	float4x4  _RingShadowMatrix[SGT_MAX_RING_SHADOWS];
+	float     _RingShadowRatio[SGT_MAX_RING_SHADOWS];
+END_CBUFFER
+
+BEGIN_CODE
+	float4 SphereShadowColor(float4x4 shadowMatrix, float4 shadowPower, float4 worldPoint)
+	{
+		float4 shadowPoint = mul(shadowMatrix, worldPoint);
+		float  shadowMag   = length(shadowPoint.xy);
+
+		//shadowMag = 1.0f - (1.0f - shadowMag) * shadowRatio;
+
+		//float4 shadow = 1.0f - pow(1.0f - shadowMag, shadowPower);
+		float4 shadow = pow(shadowMag, shadowPower);
+
+		shadow += shadowPoint.z < 0.0f;
+
+		return saturate(shadow);
+	}
+
+	float4 RingShadowColor(float4x4 shadowMatrix, sampler2D shadowSampler, float shadowRatio, float4 worldPoint)
+	{
+		float4 shadowPoint = mul(shadowMatrix, worldPoint);
+		float  shadowMag   = length(shadowPoint.xy);
+
+		shadowMag = 1.0f - (1.0f - shadowMag) * shadowRatio;
+
+		float4 shadow = tex2D(shadowSampler, shadowMag.xx);
+
+		shadow += shadowPoint.z < 0.0f;
+
+		return saturate(shadow);
+	}
+
+	float4 ShadowColor(float3 worldPoint3)
+	{
+		float4 worldPoint = float4(worldPoint3, 1.0f);
+		float4 color      = 1.0f;
+
+		for (int s = 0; s < _SphereShadowCount; s++)
+		{
+			color *= SphereShadowColor(_SphereShadowMatrix[s], _SphereShadowPower[s], worldPoint);
+		}
+
+		for (int r = 0; r < _RingShadowCount; r++)
+		{
+			color *= RingShadowColor(_RingShadowMatrix[r], _RingShadowTexture, _RingShadowRatio[r], worldPoint);
+		}
+
+		return color;
+	}
+END_CODE

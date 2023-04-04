@@ -1,0 +1,127 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Blend"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Cull Off
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_MainTex("Main Tex", 2D) = "white" {}
+
+	_DetailTex("Detail Tex", 2D) = "white" {}
+	_DetailScale("Detail Scale", Vector) = (1,1,1)
+	_DetailOffset("Detail Offset", Vector) = (0,0,0)
+	_DetailTwist("Detail Twist", Float) = 0
+	_DetailTwistBias("Detail Twist Bias", Float) = 0
+
+	_NearTex("Near Tex", 2D) = "white" {}
+	_NearScale("Near Scale", Float) = 1
+
+	_LightingTex("Lighting Tex", 2D) = "white" {}
+	_AmbientColor("Ambient Color", Color) = (0,0,0)
+
+	_ScatteringMie("Scattering Mie", Float) = 10
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _SCATTERING
+	#pragma multi_compile_local __ _DETAIL
+	#pragma multi_compile_local __ _NEAR
+	#pragma multi_compile_local __ _LIT
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+	"../../Shared/Shaders/SGT_Light.surfshader"
+	"../../Shared/Shaders/SGT_Shadow.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4    _Color;
+	sampler2D _MainTex;
+
+	sampler2D _DetailTex;
+	float2    _DetailScale;
+	float2    _DetailOffset;
+	float     _DetailTwist;
+	float     _DetailTwistBias;
+
+	sampler2D _NearTex;
+	float     _NearScale;
+
+	sampler2D _LightingTex;
+	float3    _AmbientColor;
+
+	float _ScatteringMie;
+END_CBUFFER
+
+BEGIN_CODE
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float4 wpos = SGT_O2W(v.vertex);
+		float3 wcam = _WorldSpaceCameraPos;
+
+		v.texcoord2.xyz = wpos.xyz - wcam;
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		d.texcoord0.y = d.texcoord1.y / d.texcoord1.x;
+
+		float4 main = _Color * tex2D(_MainTex, d.texcoord0.xy);
+
+		#if _DETAIL
+			d.texcoord0.y += pow(d.texcoord0.x, _DetailTwistBias) * _DetailTwist;
+			float4 detail = tex2D(_DetailTex, d.texcoord0.xy * _DetailScale + _DetailOffset);
+			main.a *= detail.a;
+		#endif
+
+		#if _NEAR
+			float2 near01 = length(d.texcoord2.xyz) * _NearScale;
+			float  near   = tex2D(_NearTex, near01).a;
+			main.a *= near;
+		#endif
+
+		float4 finalColor = main;
+
+		#if _LIT
+			finalColor.rgb *= _AmbientColor;
+
+			float4 lighting   = 0.0f;
+			float4 scattering = 0.0f;
+
+			for (int i = 0; i < SgtLightCount; i++)
+			{
+				float3 worldLightDir = normalize(d.worldSpacePosition - SgtLightPosition[i].xyz);
+				float  theta         = dot(d.worldSpaceViewDir, worldLightDir);
+
+				lighting += tex2D(_LightingTex, theta * 0.5f + 0.5f) * main * SgtLightColor[i];
+
+				#if _SCATTERING
+					scattering += MiePhase2(theta, _ScatteringMie) * SgtLightScatter[i];
+				#endif
+			}
+
+			#if _SCATTERING
+				//scattering *= finalColor.a * (1.0f - finalColor.a); // Fade scattering out according to optical depth
+				//scattering *= main;
+				//scattering *= saturate(1.0f - (finalColor + lighting)); // Only scatter into remaining rgba
+				//lighting += scattering;
+
+				scattering *= main;
+				lighting.xyz += scattering.xyz;
+			#endif
+
+			finalColor += lighting * ShadowColor(d.worldSpacePosition);
+			finalColor.a = saturate(main.a);
+		#else
+			finalColor = ModifyUnlitOutput(finalColor);
+		#endif
+
+		OutputWithAlpha(o, finalColor);
+	}
+END_CODE

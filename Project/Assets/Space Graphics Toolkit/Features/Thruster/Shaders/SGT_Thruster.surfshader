@@ -1,0 +1,40 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Tags { "Queue" = "Transparent" "PreviewType" = "Plane" "CanUseSpriteAtlas" = "True" }
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Blend One One
+	Cull Off
+	ZWrite Off
+END_PASS
+
+BEGIN_PROPERTIES
+	[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+	_Color ("Tint", Color) = (1,1,1,1)
+END_PROPERTIES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	sampler2D _MainTex;
+	fixed4    _Color;
+END_CBUFFER
+
+BEGIN_CODE
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		v.vertexColor *= _Color;
+	}
+
+	void SurfaceFunction(inout Surface o, ShaderData d)
+	{
+		float4 finalColor = tex2D(_MainTex, d.texcoord0.xy) * d.vertexColor;
+
+		finalColor.a = saturate(finalColor.a);
+
+		OutputWithAlpha(o, ModifyUnlitOutput(finalColor));
+	}
+END_CODE

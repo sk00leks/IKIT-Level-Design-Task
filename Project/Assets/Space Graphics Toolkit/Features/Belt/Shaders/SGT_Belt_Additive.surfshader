@@ -1,0 +1,14 @@
+﻿BEGIN_OPTIONS
+	Alpha "Add"
+END_OPTIONS
+
+BEGIN_SUBSHADERS
+	"SGT_Belt.surfshader"
+END_SUBSHADERS
+
+BEGIN_CODE
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		OutputWithoutAlpha(o, d.blackboard.finalColor);
+	}
+END_CODE

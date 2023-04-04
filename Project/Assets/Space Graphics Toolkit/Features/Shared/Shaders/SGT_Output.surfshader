@@ -1,0 +1,30 @@
+﻿BEGIN_OPTIONS
+	Stackable "False"
+END_OPTIONS
+
+BEGIN_CODE
+	float4 ModifyUnlitOutput(float4 finalColor)
+	{
+		#if _HDRP
+			finalColor.xyz *= 25000.0f;
+		#endif
+		return finalColor;
+	}
+
+	void OutputWithoutAlpha(inout Surface o, float4 finalColor)
+	{
+		#if _HDRP
+			o.Emission = finalColor.xyz;
+			o.Albedo   = 0.0f;
+		#else
+			o.Albedo = finalColor.xyz;
+		#endif
+	}
+
+	void OutputWithAlpha(inout Surface o, float4 finalColor)
+	{
+		OutputWithoutAlpha(o, finalColor);
+
+		o.Alpha = finalColor.w;
+	}
+END_CODE

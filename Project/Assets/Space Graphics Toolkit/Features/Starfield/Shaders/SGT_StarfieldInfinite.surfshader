@@ -1,0 +1,171 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Add"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	ZTest LEqual
+	Cull Off
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_MainTex("Main Tex", 2D) = "white" {}
+	_Scale("Scale", Float) = 0
+	_ScaleRecip("Scale Recip", Float) = 0
+	_CameraRollAngle("CameraRollAngle", Float) = 0
+
+	_NearTex("Near Tex", 2D) = "white" {}
+	_NearScale("Near Scale", Float) = 0
+
+	_WrapSize("Wrap Size", Vector) = (0,0,0)
+	_WrapScale("Wrap Scale", Vector) = (0,0,0)
+
+	_StretchDirection("Stretch Direction", Vector) = (0,0,0)
+	_StretchVector("Stretch Vector", Float) = 0
+
+	_FarTex("Far Tex", 2D) = "white" {}
+	_FarRadius("Far Radius", Float) = 0
+	_FarScale("Far Scale", Float) = 0
+
+	_ClampSizeMin("Clamp Size Min", Float) = 0
+	_ClampSizeScale("Clamp Size Scale", Float) = 1
+
+	_PulseOffset("Pulse Offset", Float) = 1
+
+	_SoftParticlesFactor("Soft Particles Factor", Float) = 1
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _POWER_RGB
+	#pragma multi_compile_local __ _CLAMP_SIZE
+	#pragma multi_compile_local __ _STRETCH
+	#pragma multi_compile_local __ _NEAR
+	#pragma multi_compile_local __ _FAR
+	#pragma multi_compile_local __ _PULSE
+	#pragma multi_compile_local __ _SOFTNESS
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4    _Color;
+	sampler2D _MainTex;
+	float     _Scale;
+	float     _ScaleRecip;
+	float     _CameraRollAngle;
+
+	float3 _WrapSize;
+	float3 _WrapScale;
+
+	float3 _StretchDirection;
+	float3 _StretchVector;
+
+	sampler2D _NearTex;
+	float     _NearScale;
+
+	sampler2D _FarTex;
+	float     _FarRadius;
+	float     _FarScale;
+
+	float _ClampSizeMin;
+	float _ClampSizeScale;
+
+	float _PulseOffset;
+
+	float _SoftParticlesFactor;
+END_CBUFFER
+
+BEGIN_CODE
+	float2 Rotate(float2 v, float a)
+	{
+		float s = sin(a);
+		float c = cos(a);
+		return float2(c * v.x - s * v.y, s * v.x + c * v.y);
+	}
+
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float3 wcam      = _WorldSpaceCameraPos;
+		float4 cameraO   = SGT_W2O(float4(wcam, 1.0f)) * _ScaleRecip;
+		float3 relativeO = v.vertex.xyz - cameraO.xyz;
+
+		v.vertex.xyz = cameraO.xyz + (frac(relativeO * _WrapScale + 0.5f) - 0.5f) * _WrapSize;
+
+		float radius = v.texcoord1.x * _Scale;
+
+		#if _CLAMP_SIZE
+			float radiusMin = abs(SGT_O2V(v.vertex).z * (_ClampSizeMin / _ScreenParams.y * _ClampSizeScale));
+			float scale     = saturate(radius / radiusMin);
+			v.vertexColor.w *= scale * scale; // Darken by shrunk amount
+			radius /= scale;
+		#endif
+
+		#if _STRETCH
+			float4 vertexM  = SGT_O2W(v.vertex);
+			float3 up       = cross(_StretchDirection, normalize(vertexM.xyz - wcam));
+
+			// Uncomment below if you want the stars to be stretched based on their size too
+			vertexM.xyz += _StretchVector * v.texcoord1.y; // * radius;
+			vertexM.xyz += up * v.normal.y * radius;
+
+			v.vertex        = SGT_W2O(vertexM);
+			v.texcoord1.xyz = SGT_W2V(vertexM).xyz;
+		#else
+			#if _PULSE
+				radius *= 1.0f + sin(v.tangent.x * 3.141592654f + _PulseOffset * v.tangent.y) * v.tangent.z;
+			#endif
+
+			float4 vertexMV = SGT_O2V(v.vertex);
+			float  angle    = _CameraRollAngle + v.normal.z * 3.141592654f;
+
+			v.normal.xy = Rotate(v.normal.xy, angle);
+
+			vertexMV.xy += v.normal.xy * radius;
+
+			v.vertex = SGT_V2O(vertexMV);
+			v.texcoord1.xyz = vertexMV.xyz;
+		#endif
+
+		#if _SOFTNESS
+			v.texcoord1.w = -SGT_O2V(v.vertex).z;
+		#endif
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float  dist       = length(d.texcoord1.xyz);
+		float4 finalColor = tex2D(_MainTex, d.texcoord0.xy);
+
+		#if _POWER_RGB
+			finalColor.rgb = pow(finalColor.rgb, float3(1.0f, 1.0f, 1.0f) + (1.0f - d.vertexColor.rgb) * 10.0f);
+		#else
+			finalColor *= d.vertexColor;
+		#endif
+
+		finalColor *= _Color;
+		finalColor *= saturate(finalColor.a);
+
+		#if _NEAR
+			float2 near = dist * _NearScale;
+			finalColor *= tex2D(_NearTex, near);
+		#endif
+
+		#if _FAR
+			float2 far = (_FarRadius - dist) * _FarScale;
+			finalColor *= tex2D(_FarTex, far);
+		#endif
+
+		#if _SOFTNESS
+			float sceneZ = GetLinearEyeDepth(d.screenUV);
+			float partZ  = d.texcoord1.w;
+
+			finalColor *= saturate(_SoftParticlesFactor * (sceneZ - partZ));
+		#endif
+
+		OutputWithoutAlpha(o, ModifyUnlitOutput(finalColor));
+	}
+END_CODE

@@ -1,0 +1,135 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Alpha "Blend"
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Cull Back
+END_PASS
+
+BEGIN_PROPERTIES
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_CubeTex("Cube Tex", CUBE) = "white" {}
+	_DepthTex("Depth Tex", 2D) = "white" {}
+
+	_NearTex("Near Tex", 2D) = "white" {}
+	_NearScale("Near Scale", Float) = 1
+
+	_DetailTex("Detail Tex", 2D) = "white" {}
+	_DetailScale("Detail Scale", Float) = 0.1
+	_DetailTiling("Detail Tiling", Float) = 1
+
+	_SoftParticlesFactor("Soft Particles Factor", Float) = 1
+
+	_LightingTex("Lighting Tex", 2D) = "white" {}
+	_AmbientColor("Ambient Color", Color) = (0,0,0)
+END_PROPERTIES
+
+BEGIN_DEFINES
+	#pragma multi_compile_local __ _LIT
+	#pragma multi_compile_local __ _NEAR
+	#pragma multi_compile_local __ _DETAIL
+	#pragma multi_compile_local __ _SOFTNESS
+END_DEFINES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Matrix.surfshader"
+	"../../Shared/Shaders/SGT_Output.surfshader"
+	"../../Shared/Shaders/SGT_Light.surfshader"
+	"../../Shared/Shaders/SGT_Shadow.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	float4      _Color;
+	samplerCUBE _CubeTex;
+	sampler2D   _DepthTex;
+
+	sampler2D _NearTex;
+	float     _NearScale;
+
+	sampler2D _DetailTex;
+	float     _DetailScale;
+	float     _DetailTiling;
+
+	sampler2D _LightingTex;
+	float3    _AmbientColor;
+
+	float _SoftParticlesFactor;
+END_CBUFFER
+
+BEGIN_CODE
+	float4 sample2(sampler2D tex, float4 coords, float polar)
+	{
+		float4 tex1 = tex2D(tex, coords.xy);
+		float4 tex2 = tex2D(tex, coords.zw);
+
+		return lerp(tex1, tex2, polar);
+	}
+
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		float4 wpos   = SGT_O2W(v.vertex);
+		float3 wnorm  = normalize(mul((float3x3)UNITY_MATRIX_M, v.normal));
+		float3 wcam   = _WorldSpaceCameraPos;
+		float2 coord0 = v.texcoord0.xy;
+
+		v.texcoord1.xyz = wpos.xyz - wcam;
+		v.texcoord0.xy  = dot(wnorm, normalize(-v.texcoord1.xyz));
+
+		#if _DETAIL
+			v.texcoord0.y = saturate((abs(coord0.y - 0.5f) - 0.2f) * 30.0f);
+			v.texcoord2 = float4(coord0.x * 2.0f, coord0.y, v.vertex.xz * 0.5f) * _DetailTiling;
+		#endif
+
+		#if _SOFTNESS
+			v.texcoord3.z = -SGT_O2V(v.vertex).z;
+		#endif
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 depth = tex2D(_DepthTex, d.texcoord0.xx);
+		float4 main  = _Color * texCUBE(_CubeTex, d.localSpaceNormal) * depth;
+
+		#if _NEAR
+			float2 near01 = length(d.texcoord1.xyz) * _NearScale;
+			float  near   = tex2D(_NearTex, near01).a;
+			main.a *= near;
+		#endif
+
+		#if _DETAIL
+			float4 detail = sample2(_DetailTex, d.texcoord2, d.texcoord0.y) - 0.5f;
+			main.a -= (1.0f - main.a) * detail.a * _DetailScale * main.a;
+		#endif
+
+		#if _SOFTNESS
+			float sceneZ = GetLinearEyeDepth(d.screenUV);
+			float partZ = d.texcoord3.z;
+
+			main.a *= smoothstep(0.0f, 1.0f, _SoftParticlesFactor * (sceneZ - partZ));
+		#endif
+
+		float4 finalColor = main;
+
+		#if _LIT
+			finalColor.rgb *= _AmbientColor;
+
+			float4 lighting = 0.0f;
+
+			for (int i = 0; i < SgtLightCount; i++)
+			{
+				float theta = dot(d.worldSpaceNormal, SgtLightDirection[i]) * 0.5f + 0.5f;
+
+				lighting += tex2D(_LightingTex, theta) * main * SgtLightColor[i];
+			}
+
+			finalColor += lighting * ShadowColor(d.worldSpacePosition);
+		#else
+			finalColor = ModifyUnlitOutput(finalColor);
+		#endif
+
+		finalColor.a = saturate(finalColor.a);
+
+		OutputWithAlpha(o, finalColor);
+	}
+END_CODE

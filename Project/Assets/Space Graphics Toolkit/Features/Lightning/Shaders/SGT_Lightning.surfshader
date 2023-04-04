@@ -1,0 +1,52 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Tags { "Queue" = "Transparent" }
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Blend One One, One One
+	Cull Off
+	ZWrite Off
+END_PASS
+
+BEGIN_PROPERTIES
+	_MainTex ("Opacity (R) Start Fade (G) End Fade (B)", 2D) = "white" {}
+	_Color ("Tint", Color) = (1,1,1,1)
+	_Age("Age", Float) = 0
+	_Scale("Scale", Vector) = (0,0,0,0)
+	_Offset("Offset", Vector) = (0,0,0,0)
+END_PROPERTIES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	sampler2D _MainTex;
+	float4    _Color;
+	float     _Age;
+	float2    _Scale;
+	float2    _Offset;
+END_CBUFFER
+
+BEGIN_CODE
+	void ModifyVertex(inout VertexData v, inout ExtraV2F e)
+	{
+		v.texcoord0.xy = v.texcoord0.xy * _Scale + _Offset;
+	}
+
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 mainTex  = tex2D(_MainTex, d.texcoord0.xy);
+		float  mainMin  = mainTex.g;
+		float  mainMax  = mainTex.b;
+		float  mainRng  = mainMax - mainMin;
+		float  progress = saturate((_Age - mainMin) / mainRng); // 0..1
+
+		progress = 1.0f - abs(progress * 2.0f - 1.0f);
+
+		float4 finalColor = saturate(_Color * mainTex.r * progress);
+
+		OutputWithAlpha(o, ModifyUnlitOutput(finalColor));
+	}
+END_CODE

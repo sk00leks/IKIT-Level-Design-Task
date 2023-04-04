@@ -1,0 +1,40 @@
+﻿BEGIN_OPTIONS
+	Workflow "Unlit"
+	Tags { "Queue" = "Transparent" "PreviewType" = "Plane" }
+END_OPTIONS
+
+BEGIN_PASS("All")
+	Blend One [_DstBlend]
+	Cull Off
+	ZWrite Off
+	ZTest [_ZTest]
+END_PASS
+
+BEGIN_PROPERTIES
+	_MainTex("Texture", 2D) = "white" {}
+	_Color("Color", Color) = (1, 1, 1, 1)
+	_ZTest("ZTest", Float) = 2 // 2 = LEqual
+	_DstBlend("DstBlend", Float) = 1 // 1 = One
+END_PROPERTIES
+
+BEGIN_SUBSHADERS
+	"../../Shared/Shaders/SGT_Output.surfshader"
+END_SUBSHADERS
+
+BEGIN_CBUFFER
+	sampler2D _MainTex;
+	float4    _Color;
+END_CBUFFER
+
+BEGIN_CODE
+	void SurfaceFunction(inout Surface o, inout ShaderData d)
+	{
+		float4 finalColor = _Color;
+
+		finalColor.rgb *= finalColor.a;
+
+		finalColor *= tex2D(_MainTex, d.texcoord0.xy);
+
+		OutputWithAlpha(o, ModifyUnlitOutput(finalColor));
+	}
+END_CODE
