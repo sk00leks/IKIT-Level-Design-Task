@@ -48,8 +48,8 @@ MonoBehaviour:
   - {fileID: 4470953096191404424, guid: 3414925552cf2934497807922db85e0d, type: 3}
   - {fileID: 2439818583356853439, guid: e6229d213dab36c46914960e186db291, type: 3}
   - {fileID: 530546688504665382, guid: f70511ad97be236429cc1da2804174b0, type: 3}
-  planet: {fileID: 4369315860000459626, guid: 1035582556c0bad4b8058887b3b9bbd8, type: 3}
+  planet: {fileID: 4369315860000459626, guid: 79b08390f26f08745b5a8d87bbdd3749, type: 3}
   backGround: {fileID: 5957412030064369023, guid: b37031b496f38dc468c475a56c045b1c, type: 3}
   startNumberRubbish: 60
   maxNumberRubbish: 100
-  backgroungColor: {r: 0.14150941, g: 0.012682444, b: 0.13138983, a: 0}
+  backgroungColor: {r: 0.07620538, g: 0, b: 0.11320752, a: 0}
