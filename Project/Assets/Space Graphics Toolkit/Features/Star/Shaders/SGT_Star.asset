@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Space Graphics Toolkit/Star
   target: {fileID: 4800000, guid: 9da402ed5969289488d2230b2333b8b6, type: 3}
   variantHash: -647032354
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>-647032354</HASH>\n////////////////////////////////////////\n//

@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Hidden/SgtCoronaOuter
   target: {fileID: 4800000, guid: 543c4c989486cf04b82a14907343f196, type: 3}
   variantHash: -955037051
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>-955037051</HASH>\n////////////////////////////////////////\n//

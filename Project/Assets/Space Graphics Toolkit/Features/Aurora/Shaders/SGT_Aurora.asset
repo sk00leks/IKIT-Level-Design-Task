@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Hidden/SgtAurora
   target: {fileID: 4800000, guid: 62a3385fd4e9a6742b89e6e25f9989b5, type: 3}
   variantHash: 74991651
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>74991651</HASH>\n////////////////////////////////////////\n//

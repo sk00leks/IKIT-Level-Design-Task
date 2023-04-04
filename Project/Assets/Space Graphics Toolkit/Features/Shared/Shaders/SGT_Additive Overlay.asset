@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Space Graphics Toolkit/Additive Overlay
   target: {fileID: 4800000, guid: 8dba859daacbad646aaa25aec6869c19, type: 3}
   variantHash: 69663357
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>69663357</HASH>\n////////////////////////////////////////\n//

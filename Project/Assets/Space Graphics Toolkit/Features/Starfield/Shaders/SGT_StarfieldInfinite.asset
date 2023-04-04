@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Hidden/SgtStarfieldInfinite
   target: {fileID: 4800000, guid: 5fe21cba1562d42429dfd5d1ef53990b, type: 3}
   variantHash: 673930078
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>673930078</HASH>\n////////////////////////////////////////\n//

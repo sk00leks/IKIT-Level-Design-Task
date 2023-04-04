@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Hidden/SgtLightning
   target: {fileID: 4800000, guid: eea2333a66a3dd4448789f9b3d2f0d5d, type: 3}
   variantHash: -395273187
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>-395273187</HASH>\n////////////////////////////////////////\n//

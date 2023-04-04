@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Hidden/SgtRing
   target: {fileID: 4800000, guid: 4354769ef2f7dd3469a056d3151f77fb, type: 3}
   variantHash: -1572343938
-  projectHash: 382431138
+  projectHash: -1992112912
   variants:
   - Pipe: 0
     Code: "//<HASH>-1572343938</HASH>\n////////////////////////////////////////\n//
