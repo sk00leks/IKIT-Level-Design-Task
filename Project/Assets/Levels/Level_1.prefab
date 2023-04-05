@@ -50,6 +50,6 @@ MonoBehaviour:
   - {fileID: 530546688504665382, guid: f70511ad97be236429cc1da2804174b0, type: 3}
   planet: {fileID: 2685326753138249687, guid: 2111af2ba9ba42b49b916f777c826635, type: 3}
   backGround: {fileID: 5957412030064369023, guid: b37031b496f38dc468c475a56c045b1c, type: 3}
-  startNumberRubbish: 60
-  maxNumberRubbish: 100
-  backgroungColor: {r: 0.07620538, g: 0, b: 0.11320752, a: 0}
+  startNumberRubbish: 80
+  maxNumberRubbish: 80
+  backgroungColor: {r: 0.0722094, g: 0.01223745, b: 0.103773594, a: 0}
