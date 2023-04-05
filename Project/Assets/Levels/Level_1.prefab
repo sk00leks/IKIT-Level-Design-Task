@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rubbishList:
-  - {fileID: 4470953096191404424, guid: 3414925552cf2934497807922db85e0d, type: 3}
+  - {fileID: 2439818583356853439, guid: 68cb9ec16a677174380fc4472e2cd690, type: 3}
   - {fileID: 2439818583356853439, guid: e6229d213dab36c46914960e186db291, type: 3}
   - {fileID: 530546688504665382, guid: f70511ad97be236429cc1da2804174b0, type: 3}
-  planet: {fileID: 1456210032300402121, guid: 72c41f99aa698144494f1c7072b599f9, type: 3}
+  planet: {fileID: 2685326753138249687, guid: 2111af2ba9ba42b49b916f777c826635, type: 3}
   backGround: {fileID: 5957412030064369023, guid: b37031b496f38dc468c475a56c045b1c, type: 3}
   startNumberRubbish: 60
   maxNumberRubbish: 100
