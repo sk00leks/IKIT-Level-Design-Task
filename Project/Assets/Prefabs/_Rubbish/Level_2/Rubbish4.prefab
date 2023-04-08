@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5478614477251797972}
   - component: {fileID: 4668538858874969445}
   m_Layer: 0
-  m_Name: Rubbish3
+  m_Name: Rubbish4
   m_TagString: Rubbish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6473275886695077714}
-  m_Mesh: {fileID: 4300000, guid: 4130c037a1cefcb4a882db107b89e331, type: 3}
+  m_Mesh: {fileID: 4300000, guid: c9803c8af5682cd4c94cbbcfc1456ce8, type: 3}
 --- !u!23 &2491723495552664795
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea1a1351e36aa6d42904b11d21411069, type: 2}
+  - {fileID: 2100000, guid: a1b3ba9e2c2b6e7429a0e6b08e25bd77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

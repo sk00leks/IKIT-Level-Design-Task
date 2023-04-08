@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5546776068842970222}
   - component: {fileID: 3246594767690376029}
   m_Layer: 0
-  m_Name: Level_1
+  m_Name: Level_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rubbishList:
-  - {fileID: 2439818583356853439, guid: 68cb9ec16a677174380fc4472e2cd690, type: 3}
-  - {fileID: 2439818583356853439, guid: e6229d213dab36c46914960e186db291, type: 3}
-  - {fileID: 530546688504665382, guid: f70511ad97be236429cc1da2804174b0, type: 3}
-  - {fileID: 530546688504665382, guid: 91318729facf90b478921dcd2d5d7f08, type: 3}
-  planet: {fileID: 2685326753138249687, guid: 2111af2ba9ba42b49b916f777c826635, type: 3}
-  backGround: {fileID: 5957412030064369023, guid: b37031b496f38dc468c475a56c045b1c, type: 3}
+  - {fileID: 2439818583356853439, guid: c3a502659e599864198576335378f077, type: 3}
+  - {fileID: 2439818583356853439, guid: ce075b909466ce64e8eea612d55daafe, type: 3}
+  - {fileID: 530546688504665382, guid: 75a9858390ad189478ad18bffd47ecb5, type: 3}
+  - {fileID: 530546688504665382, guid: 457a190ee8a64614bb49be818b2665a7, type: 3}
+  planet: {fileID: 2685326753138249687, guid: c924bacb9d62dc848966f254f20217d0, type: 3}
+  backGround: {fileID: 5957412030064369023, guid: 95adb6a4f77052149bca78e625827daa, type: 3}
   startNumberRubbish: 80
   maxNumberRubbish: 80
-  backgroungColor: {r: 0.17048463, g: 0.11868102, b: 0.1981132, a: 0}
+  backgroungColor: {r: 0.19111252, g: 0.085662164, b: 0.23584908, a: 0}
