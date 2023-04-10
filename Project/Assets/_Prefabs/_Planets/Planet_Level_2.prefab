@@ -888,7 +888,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3718788778685064755}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3718788777006643952
 MeshFilter:
@@ -981,6 +981,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5826272502690069023}
   - {fileID: 7972473719855598469}
   - {fileID: 3718788777006643951}
   m_Father: {fileID: 5589146756746955147}
@@ -1391,7 +1392,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7972473719855598469}
+    m_TransformParent: {fileID: 3718788778685064755}
     m_Modifications:
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_RootOrder
@@ -1399,23 +1400,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.76359826
+      value: 15.55922
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.76359826
+      value: 15.55922
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.76359826
+      value: 15.55922
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.25
+      value: 45.84642
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.74
+      value: -15.078378
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1463,6 +1464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
+--- !u!4 &5826272502690069023 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 5d542557f6c1c9e43b62dc7cfa35bda6, type: 3}
+  m_PrefabInstance: {fileID: 1558710798143852805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3159660333626876063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1472,19 +1478,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -4216859302048453862, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20.376186
+      value: 18.3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20.376186
+      value: 18.3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20.376186
+      value: 18.3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1537,11 +1543,11 @@ PrefabInstance:
     - target: {fileID: -1504981713932161579, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f783687db1016474a9a05ee0d7b4f6b4, type: 2}
+      objectReference: {fileID: 2100000, guid: 2217c07eb2abc934298283390adaee52, type: 2}
     - target: {fileID: -1504981713932161579, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 0b713bbcfb815054d9f49bf73f42c23a, type: 2}
+      objectReference: {fileID: 2100000, guid: d4a056df570059949a936b2f9133a4ad, type: 2}
     - target: {fileID: -927199367670048503, guid: 57385671c7b1d4b4884261ad81150821, type: 3}
       propertyPath: m_Name
       value: planet_2 (1)
