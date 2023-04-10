@@ -248,7 +248,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597313196395558391}
-  m_LocalRotation: {x: 0.26117125, y: 0.6019867, z: -0.20576859, w: 0.7259896}
+  m_LocalRotation: {x: 0.26228622, y: 0.605993, z: -0.20430802, w: 0.7226595}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainTex: {fileID: 2800000, guid: 4cc954d0ac2f02d46bb53e2caf728817, type: 3}
-  color: {r: 0.20425421, g: 0.92479295, b: 0.9622642, a: 1}
+  color: {r: 0.20392154, g: 0.9607843, b: 0.42203218, a: 1}
   brightness: 0.42
   renderQueue:
     Group: 3000
@@ -475,8 +475,8 @@ MonoBehaviour:
   starCount: 344
   starColors:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 0.3160377, b: 0.47015062, a: 1}
+    key0: {r: 0.0048570633, g: 1, b: 0, a: 1}
+    key1: {r: 0.6226415, g: 0.48741335, b: 0.4493592, a: 1}
     key2: {r: 1, g: 0.21842125, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -484,8 +484,8 @@ MonoBehaviour:
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 34310
-    ctime2: 65342
+    ctime1: 32960
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -868,18 +868,18 @@ MonoBehaviour:
   starCount: 3000
   starColors:
     serializedVersion: 2
-    key0: {r: 0, g: 0.9543438, b: 1, a: 1}
-    key1: {r: 0.8301887, g: 0.72251326, b: 0.59131366, a: 1}
-    key2: {r: 0.8962264, g: 0.29169634, b: 0.42791128, a: 1}
-    key3: {r: 0.8962264, g: 0.29169634, b: 0.42791128, a: 0}
+    key0: {r: 0, g: 0.71847177, b: 1, a: 1}
+    key1: {r: 0.14956842, g: 0.5849056, b: 0.12967247, a: 1}
+    key2: {r: 0.8301887, g: 0.72251326, b: 0.59131366, a: 1}
+    key3: {r: 1, g: 0.69426787, b: 0.48584908, a: 0}
     key4: {r: 1, g: 0.27978843, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 43947
-    ctime2: 65535
-    ctime3: 57054
+    ctime1: 22166
+    ctime2: 43947
+    ctime3: 65535
     ctime4: 56283
     ctime5: 0
     ctime6: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 3
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   starRadiusMin: 10
   starRadiusMax: 30
@@ -957,7 +957,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3097646925135384702}
-  m_LocalRotation: {x: 0.2204806, y: 0.73226255, z: -0.10138202, w: 0.6363188}
+  m_LocalRotation: {x: 0.2019381, y: 0.7811471, z: -0.05543591, w: 0.5881812}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -1212,7 +1212,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3ffcce23571798443bd79b888ace3403, type: 3}
-  m_Color: {r: 1, g: 0.4691367, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.25360346, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1247,7 +1247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4374481687647653044}
-  m_LocalRotation: {x: 0.69180495, y: 0.18482928, z: -0.64250344, w: 0.27282488}
+  m_LocalRotation: {x: 0.73994786, y: 0.17356806, z: -0.6071297, w: 0.23182952}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -1473,7 +1473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainTex: {fileID: 2800000, guid: 4cc954d0ac2f02d46bb53e2caf728817, type: 3}
-  color: {r: 0.9607843, g: 0.20392154, b: 0.25914434, a: 1}
+  color: {r: 0, g: 0.61144805, b: 1, a: 1}
   brightness: 0.42
   renderQueue:
     Group: 3000
@@ -1527,7 +1527,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5709960112007853672}
-  m_LocalRotation: {x: 0.18505734, y: 0.556142, z: -0.17872883, w: 0.79026324}
+  m_LocalRotation: {x: 0.14436552, y: 0.53372127, z: -0.16149075, w: 0.8174478}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
