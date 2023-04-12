@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6590103585319284574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5546776068842970222}
+  - component: {fileID: 3246594767690376029}
+  m_Layer: 0
+  m_Name: Level_12
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5546776068842970222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590103585319284574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.413776, y: 22.085762, z: -9.431769}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3246594767690376029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590103585319284574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a322179065cc4a91e484b3477d858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rubbishList:
+  - {fileID: 2439818583356853439, guid: bcdbc5def3121964f843f47df5d4d307, type: 3}
+  - {fileID: 2439818583356853439, guid: 4f20e9a3221c998469ed85b712fcb665, type: 3}
+  - {fileID: 530546688504665382, guid: de802defab1ee954aba96bfbb0940a2b, type: 3}
+  - {fileID: 530546688504665382, guid: 2196b4cf3b58b194cab8c88f908ff182, type: 3}
+  planet: {fileID: 2685326753138249687, guid: e48b114443ec3d6419383048d2490f12, type: 3}
+  backGround: {fileID: 5957412030064369023, guid: 27e8fbf0d312b0247892fa4180b361b6, type: 3}
+  startNumberRubbish: 80
+  maxNumberRubbish: 80
+  backgroungColor: {r: 0.29411766, g: 0.09803922, b: 0.2784314, a: 0}
