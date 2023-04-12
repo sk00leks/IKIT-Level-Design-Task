@@ -53,4 +53,4 @@ MonoBehaviour:
   backGround: {fileID: 5957412030064369023, guid: 73d93b44ad88a874eb2a1d645f3006f9, type: 3}
   startNumberRubbish: 80
   maxNumberRubbish: 80
-  backgroungColor: {r: 0.12793697, g: 0.13429727, b: 0.21698111, a: 0}
+  backgroungColor: {r: 0.14551443, g: 0.15176463, b: 0.2830189, a: 0}

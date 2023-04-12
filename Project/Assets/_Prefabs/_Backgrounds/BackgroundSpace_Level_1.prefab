@@ -114,7 +114,7 @@ MonoBehaviour:
   starColors:
     serializedVersion: 2
     key0: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-    key1: {r: 1, g: 0.61690074, b: 0.41037738, a: 1}
+    key1: {r: 0, g: 0.061049446, b: 0.9716981, a: 1}
     key2: {r: 0.36078432, g: 0.36078432, b: 0.36078432, a: 0}
     key3: {r: 1, g: 1, b: 0, a: 0}
     key4: {r: 0.39215687, g: 1, b: 1, a: 0}
@@ -285,7 +285,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -527,7 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0.85882354}
-  brightness: 1
+  brightness: 0.4
   mainTex: {fileID: 2800000, guid: 21e254ab4724da1429576c9e045ce231, type: 3}
   layout: 0
   layoutColumns: 1
@@ -694,7 +694,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -816,17 +816,17 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 0, g: 0.9543438, b: 1, a: 1}
     key1: {r: 0.8301887, g: 0.72251326, b: 0.59131366, a: 1}
-    key2: {r: 1, g: 0.98626435, b: 0.9386792, a: 1}
-    key3: {r: 0.09301472, g: 0, b: 1, a: 0}
-    key4: {r: 1, g: 0.27978843, b: 0, a: 0}
+    key2: {r: 0.9523489, g: 0.91225255, b: 0.84120417, a: 1}
+    key3: {r: 0.3094119, g: 0.745283, b: 0.24959952, a: 0}
+    key4: {r: 0, g: 0.35255194, b: 1, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 10794
-    ctime2: 33924
-    ctime3: 37394
-    ctime4: 56283
+    ctime2: 40285
+    ctime3: 48573
+    ctime4: 65535
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -1111,14 +1111,14 @@ MonoBehaviour:
   distortScaleX: 8.58
   distortScaleY: 1
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &3120171158167187364
 GameObject:
@@ -1185,14 +1185,14 @@ MonoBehaviour:
   distortScaleX: 8.58
   distortScaleY: 1
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &3506785484478175814
 GameObject:
@@ -1345,7 +1345,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -1575,14 +1575,14 @@ MonoBehaviour:
   distortScaleX: 8.58
   distortScaleY: 1
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &4769115060983113311
 GameObject:
@@ -1693,7 +1693,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4797486084523345330}
-  m_LocalRotation: {x: -0.1245086, y: 0.08531628, z: -0.6881919, w: 0.7096554}
+  m_LocalRotation: {x: 0.27122763, y: 0.029028233, z: -0.061523464, w: 0.9601083}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -2003,14 +2003,14 @@ MonoBehaviour:
   distortScaleX: 10
   distortScaleY: 50
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &5097705496469969586
 GameObject:
@@ -2161,14 +2161,14 @@ MonoBehaviour:
   distortScaleX: 8.58
   distortScaleY: 1
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &5321291847882081905
 GameObject:
@@ -2237,7 +2237,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -2341,14 +2341,14 @@ MonoBehaviour:
   distortScaleX: 10
   distortScaleY: 20
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &5957412030064369023
 GameObject:
@@ -2414,7 +2414,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5989422603442164391}
-  m_LocalRotation: {x: 0.29395568, y: 0.008989138, z: -0.7881024, w: 0.5407439}
+  m_LocalRotation: {x: 0.3462778, y: -0.10311292, z: -0.10278422, w: 0.92676586}
   m_LocalPosition: {x: 0, y: -122, z: 0}
   m_LocalScale: {x: 99.999985, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -2590,7 +2590,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -2929,14 +2929,14 @@ MonoBehaviour:
   distortScaleX: 5
   distortScaleY: 5
   distortStrength: 0.1
-  distortOffset: {x: 10.183076, y: 0}
+  distortOffset: {x: 16.153822, y: 0}
   distortSpeed: {x: 0.1, y: 0}
   detail: 1
   detailTex: {fileID: 2800000, guid: b20403387ea956e4a97b7b93e6df71e0, type: 3}
   detailScaleX: 0.38
   detailScaleY: 1
   detailStrength: -8.64
-  detailOffset: {x: 10.683087, y: 0.5}
+  detailOffset: {x: 16.653877, y: 0.5}
   detailSpeed: {x: 0.1, y: 0}
 --- !u!1 &8374886121621144728
 GameObject:
@@ -2963,7 +2963,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8374886121621144728}
-  m_LocalRotation: {x: -0.1245086, y: 0.08531628, z: -0.6881919, w: 0.7096554}
+  m_LocalRotation: {x: 0.27122763, y: 0.029028233, z: -0.061523464, w: 0.9601083}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -3065,7 +3065,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8518773510121372551}
-  m_LocalRotation: {x: -0.10163427, y: -0.43191856, z: -0.4782953, w: 0.7578592}
+  m_LocalRotation: {x: 0.16684698, y: -0.20399897, z: -0.104042165, w: 0.9590213}
   m_LocalPosition: {x: 0, y: -122, z: 0}
   m_LocalScale: {x: 99.999985, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -3402,7 +3402,7 @@ MonoBehaviour:
   nearTex: {fileID: 0}
   nearThickness: 2
   pulse: 1
-  pulseOffset: 0
+  pulseOffset: 59.70826
   pulseSpeed: 1
   seed: 10
   radius: 1
@@ -3466,7 +3466,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9060390929769305485}
-  m_LocalRotation: {x: -0.41887042, y: 0.8951523, z: -0.15209597, w: -0.010809416}
+  m_LocalRotation: {x: 0.58830184, y: 0.013368431, z: -0.10316866, w: 0.8019218}
   m_LocalPosition: {x: 0, y: -122, z: 0}
   m_LocalScale: {x: 99.999985, y: 100, z: 100}
   m_ConstrainProportionsScale: 0

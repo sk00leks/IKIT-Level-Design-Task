@@ -202,14 +202,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234666975}
-  m_LocalRotation: {x: 0.4199074, y: -0.28378418, z: 0.3143883, w: -0.80268574}
-  m_LocalPosition: {x: -51.418327, y: -35.41717, z: -34.747158}
+  m_LocalRotation: {x: 0.7417961, y: -0.099021964, z: -0.4583914, w: -0.47938564}
+  m_LocalPosition: {x: 42.06428, y: -57.654766, z: 8.636316}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 176.208, y: -119.1, z: 211.96}
+  m_LocalEulerAnglesHint: {x: 251.711, y: -164.187, z: 248.81}
 --- !u!114 &234666979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,15 +222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087722501b66af446ace1a9e53e5c05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollAngle: -26.250004
-  rollQuaternion: {x: 0, y: 0, z: -0.22707629, w: 0.97387695}
+  rollAngle: -107.87796
+  rollQuaternion: {x: 0, y: 0, z: -0.80839056, w: 0.58864653}
   rollMatrix:
-    e00: 0.8968727
-    e01: 0.44228873
+    e00: -0.30699062
+    e01: 0.9517126
     e02: 0
     e03: 0
-    e10: -0.44228873
-    e11: 0.8968727
+    e10: -0.9517126
+    e11: -0.30699062
     e12: -0
     e13: 0
     e20: -0
